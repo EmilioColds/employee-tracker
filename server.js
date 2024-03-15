@@ -201,4 +201,23 @@ function addEmp() {
     });
 }
 
+function updateEmpRole() {
+    
+}
+
+// Other functions to get info for the main functions
+function getRole(callback) {
+    db.query('SELECT id, title FROM roles', (err, results) => {
+        if (err) throw err;
+        callback(results);
+    });
+}
+
+function getEmp(callback) {
+    db.query('SELECT id, first_name, last_name, FROM employees', (err, results) => {
+        if (err) throw err;
+        callback(results);
+    });
+}
+
 
