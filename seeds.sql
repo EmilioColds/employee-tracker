@@ -5,13 +5,13 @@ VALUES  ('Sales'),
         ('Legal');
 
 INSERT INTO roles (title, salary, department_id)
-VALUES  ('Salesperson', 80000, (SELECT id FROM departments WHERE name = 'Sales')),
-        ('Lead Engineer', 150000, (SELECT id FROM departments WHERE name = 'Engineering')),
-        ('Software Engineer', 120000, (SELECT id FROM departments WHERE name = 'Engineering')),
-        ('Account Manager', 160000, (SELECT id FROM departments WHERE name = 'Finance')),
-        ('Accountant', 125000, (SELECT id FROM departments WHERE name = 'Finance')),
-        ('Legal Team Lead', 250000, (SELECT id FROM departments WHERE name = 'Legal')),
-        ('Lawyer', 190000, (SELECT id FROM departments WHERE name = 'Legal'));
+VALUES  ('Salesperson', 80000, (SELECT id FROM departments AS department_name WHERE name = 'Sales')),
+        ('Lead Engineer', 150000, (SELECT id FROM departments AS department_name WHERE name = 'Engineering')),
+        ('Software Engineer', 120000, (SELECT id FROM departments AS department_name WHERE name = 'Engineering')),
+        ('Account Manager', 160000, (SELECT id FROM departments AS department_name WHERE name = 'Finance')),
+        ('Accountant', 125000, (SELECT id FROM departments AS department_name WHERE name = 'Finance')),
+        ('Legal Team Lead', 250000, (SELECT id FROM departments AS department_name WHERE name = 'Legal')),
+        ('Lawyer', 190000, (SELECT id FROM departments AS department_name WHERE name = 'Legal'));
 
 INSERT INTO employees (first_name, last_name, role_id)
 VALUES  ('Mike', 'Chan', (SELECT id FROM roles WHERE title = 'Salesperson')),
