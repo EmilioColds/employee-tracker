@@ -85,9 +85,9 @@ function questions() {
 }
 
 function viewAllDep() {
-    db.query('SELECT * FROM departments', (err, result) => {
+    db.query('SELECT * FROM departments', (err, results) => {
         if (err) throw err;
-        console.log(results);
+        console.table(results);
         questions();
     });
 }
@@ -98,7 +98,7 @@ function viewAllRoles() {
                         JOIN departments ON roles.department_id = departments.id`
     db.query(sqlPrompt, (err, results) => {
         if (err) throw err;
-        console.log(results);
+        console.table(results);
         questions();
     });
 }
@@ -111,7 +111,7 @@ function viewAllEmp() {
                         LEFT JOIN employees manager ON employees.manager_id = manager.id`
     db.query(sqlPrompt, (err, results) => {
         if (err) throw err;
-        console.log(results);
+        console.table(results);
         questions();
     });
 }
@@ -151,9 +151,9 @@ function addRole() {
                 type: 'list',
                 name: 'departmentId',
                 message: 'Please select the department for the new role:',
-                choices: departments.map(department => ({name: department.name, value: department.id}))
+                choices: results.map(department => ({name: department.name, value: department.id}))
             }
-        ]).then(answer => {
+        ]).then(answers => {
             db.query('INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)',
             [answers.title, answers.salary, answers.departmentId],
             (err, results) => {
