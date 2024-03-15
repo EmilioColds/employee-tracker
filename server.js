@@ -1,8 +1,16 @@
 const express = require('express');
-const inquirer = require('inquirer');
 const mysql = require('mysql2');
 const { type } = require('os');
 const app = express();
+
+let inquirer;
+
+import('inquirer').then(module => {
+    inquirer = module.default;
+    initApp()
+});
+
+function initApp() {
 
 app.use(express.json());
 
@@ -79,7 +87,7 @@ function questions() {
 function viewAllDep() {
     db.query('SELECT * FROM departments', (err, result) => {
         if (err) throw err;
-        console.table(results);
+        console.log(results);
         questions();
     });
 }
@@ -90,7 +98,7 @@ function viewAllRoles() {
                         JOIN departments ON roles.department_id = departments.id`
     db.query(sqlPrompt, (err, results) => {
         if (err) throw err;
-        console.table(results);
+        console.log(results);
         questions();
     });
 }
@@ -103,7 +111,7 @@ function viewAllEmp() {
                         LEFT JOIN employees manager ON employees.manager_id = manager.id`
     db.query(sqlPrompt, (err, results) => {
         if (err) throw err;
-        console.table(results);
+        console.log(results);
         questions();
     });
 }
@@ -237,10 +245,11 @@ function getRole(callback) {
 }
 
 function getEmp(callback) {
-    db.query('SELECT id, first_name, last_name, FROM employees', (err, results) => {
+    db.query('SELECT id, first_name, last_name FROM employees', (err, results) => {
         if (err) throw err;
         callback(results);
     });
+}
 }
 
 
