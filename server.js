@@ -202,7 +202,30 @@ function addEmp() {
 }
 
 function updateEmpRole() {
-    
+    getEmp((employees) => {
+        getRole((roles) => {
+            inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'employeeId',
+                    message: 'Please select the employee that will be updated:',
+                    choices: employees.map(emp => ({ name: emp.first_name + '' + emp.last_name, value: emp.id}))
+                },
+                {
+                    type: 'list',
+                    name: 'roleId',
+                    message: "Please select the employee's new role:",
+                    choices: roles.map(role => ({ name: role.title, value: role.id}))
+                }
+            ]).then(answers => {
+                db.query('UPDATE employees SET role_id = ? WHERE id = ?', [answers.roleId, answers.employeeId,], (err, results) => {
+                    if (err) throw err;
+                    console.log("The employee's role has been updated successfully.");
+                    questions();
+                });
+            });
+        });
+    });
 }
 
 // Other functions to get info for the main functions
