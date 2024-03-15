@@ -157,4 +157,48 @@ function addRole() {
     });
 }
 
+function addEmp() {
+    getRole((roles) => {
+        getEmp((employees) => {
+            inquirer.prompt([
+                {
+                    type: 'input',
+                    name: 'firstName',
+                    message: 'Please enter the first name of the new employee:'
+                },
+                {
+                    type: 'input',
+                    name: 'lastName',
+                    message: 'Please enter the last name of the new employee:'
+                },
+                {
+                    type: 'list',
+                    name: 'roleId',
+                    message: "Please select the new employee's role:",
+                    choices: roles.map(role => ({ name: role.title, value: role.id }))
+                },
+                {
+                    type: 'list',
+                    name: 'managerId',
+                    message: "Please select the new employee's manager:",
+                    choices: [{ name: 'None', value: null }].concat(employees.map(employee => ({
+                        name: employee.first_name + '' + employee.last_name,
+                        value: employee.id
+                    })))
+                }
+            ]).then(answers => {
+                const sqlPrompt =   `INSERT INTO employees (first_name, last_name, role_id, manager_id)
+                                    VALUES (?, ?, ?, ?)`;
+                const params = [answers.firstName, answers.lastName, answers.roleId, answers.managerId];
+
+                db.query(sqlPrompt, params, (err, results) => {
+                    if (err) throw err;
+                    console.log(`Added ${answers.firstName} ${answers.lastName} as a new employee to the enterprise's database`);
+                    questions();
+                });
+            });
+        });
+    });
+}
+
 
